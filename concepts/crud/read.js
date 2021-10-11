@@ -5,10 +5,24 @@ const readFindOne = async (client) => {
 }
 
 const readFind = async (client) => {
-    const curser = client.db('movieData').collection('movies').find({url: 'http://www.tvmaze.com/shows/97/the-biggest-loser'});
+    // const curser = client.db('movieData').collection('movies').find({url: 'http://www.tvmaze.com/shows/97/the-biggest-loser'});
+    const curser = client.db('movieData').collection('movies').find({status : 'Running'});
     const result = await curser.toArray()
 
-    console.log( result )
-
+    console.log( result.name )
 }
-module.exports = { readFindOne, readFind }
+
+//Query Operators
+
+//in
+const readOperatorIn = async (client) => {
+    const curser = client.db('movieData').collection('movies').find({status : { $in : ['Ended', 'Running']}});
+    const result = await curser.toArray();
+
+    console.log(result)
+
+} 
+
+
+
+module.exports = { readFindOne, readFind, readOperatorIn }

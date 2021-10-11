@@ -1,6 +1,32 @@
+const schemaValidation = async (client) => {
+    const validation = await client.db('shareB').command(
+        {
+            collMod : 'products',
+            validator : {
+                $jsonSchema : {
+                    bsonType : 'object',
+                    required : ['bookName', 'authorName'],
+                    properties : {
+                        bookName: {
+                            bsonType: 'string'
+                        },
+                        authorName : {
+                            bsonType : 'string'
+                        }
+                    }   
+                }
+            },
+        })
+}
+
 const createInsertOne = async ( client ) => {
-    const result = await client.db('shareB').collection('Books').insertOne({ bookName : "A very new Book"});
-    console.log(`New List had been added with id - ${result.insertedId}`);
+    const result = await client
+        .db('shareB')
+        .collection('products')
+        .insertOne({ bookName : "A very new Book"});
+    
+    // console.log(result)
+    // console.log(`New List had been added with id - ${result.insertedId}`);
 } 
 
 const createInsertMany = async ( client ) => {
@@ -40,8 +66,9 @@ const orderedInserts = async ( client ) => {
     ], {ordered : false});
 
     console.log(result.insertedIds);
+
 }
 
 module.exports = {
-    createInsertOne, createInsertMany, orderedInserts
+    createInsertOne, createInsertMany, orderedInserts, schemaValidation
 }

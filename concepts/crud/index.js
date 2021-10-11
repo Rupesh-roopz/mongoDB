@@ -2,10 +2,12 @@ const { MongoClient } = require('mongodb');
 
 const { createInsertOne,
         createInsertMany,
-        orderedInserts 
+        orderedInserts,
+        schemaValidation
         } = require('./create');
 const { readFindOne,
-        readFind 
+        readFind,
+        readOperatorIn
         } = require('./read');
 
 const uri = 'mongodb://localhost:27017'
@@ -15,15 +17,18 @@ const connection = async () => {
     try {
         await client.connect();
 
-        // await createInsertOne(client);
+        await schemaValidation(client)
+
+        await createInsertOne(client);
         // await createInsertMany(client)
         // await orderedInserts(client)
 
         // await readFindOne(client);
-        await readFind(client);
+        // await readFind(client);
+        // await readOperatorIn(client)
         
     } catch (error) {
-        console.log('error ' + error);
+        console.log("error");
     } finally {
         client.close();
     }
