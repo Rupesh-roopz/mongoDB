@@ -1,5 +1,5 @@
 const schemaValidation = async (client) => {
-    const validation = await client.db('shareB').command(
+    await client.db('shareB').command(
         {
             collMod : 'products',
             validator : {
